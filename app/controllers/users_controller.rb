@@ -15,7 +15,7 @@ class UsersController < ApplicationController
             token = encode_token({ user_id: user.id })
             render json: { user: UserSerializer.new(user), token: token }, status: :created
         else
-            render json: { message: user.errors.full_messages }, status: :bad_request
+            render json: { error: user.errors.full_messages }, status: :bad_request
         end
 
     end
@@ -27,7 +27,7 @@ class UsersController < ApplicationController
             token = encode_token({ user_id: user.id})
             render json: { user: UserSerializer.new(user), token: token}
         else
-            render json: { message: "Invalid username or password" }, status: :unauthorized
+            render json: { error: "Invalid username or password" }, status: :unauthorized
         end
     end
 

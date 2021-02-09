@@ -12,10 +12,9 @@ class ApplicationController < ActionController::API
     def authenticate
         begin
             payload = decode_token(get_auth_token)
-            set_current_user!(decoded_token["user_id"])
+            set_current_user!(payload["user_id"])
         rescue
-            render json: { error: "Invalid Request" },
-            status: :unauthorized
+            render json: { error: "Invalid Request" }, status: :unauthorized
         end
     end
 
@@ -25,7 +24,7 @@ class ApplicationController < ActionController::API
         auth_header.split(' ')[1] if auth_header
     end
 
-    def set_current_user
+    def set_current_user!(id)
         @current_user = User.find(id)
     end
 
