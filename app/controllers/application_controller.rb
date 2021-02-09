@@ -12,7 +12,7 @@ class ApplicationController < ActionController::API
     def authenticate
         begin
             payload = decode_token(get_auth_token)
-            set_current_user!(payload["user_id"])
+            set_current_user!(decoded_token["user_id"])
         rescue
             render json: { error: "Invalid Request" },
             status: :unauthorized
