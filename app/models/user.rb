@@ -4,6 +4,5 @@ class User < ApplicationRecord
 
     has_many :kitchens
     has_many :ingredients, through: :kitchens
-    has_many :recipes
     has_many :recipes, through: :kitchens
 end
