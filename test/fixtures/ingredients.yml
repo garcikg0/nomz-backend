@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  kitchen: one
+  name: MyString
+  storage: MyString
+  icon: MyString
+  status: MyString
+  notes: MyString
+
+two:
+  kitchen: two
+  name: MyString
+  storage: MyString
+  icon: MyString
+  status: MyString
+  notes: MyString

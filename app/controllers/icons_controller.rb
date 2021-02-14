@@ -1,0 +1,2 @@
+class IconsController < ApplicationController
+end

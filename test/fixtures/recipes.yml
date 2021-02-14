@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  kitchen: one
+  name: MyString
+  image: MyString
+  source: MyString
+  url: MyString
+  ingredient_lines: MyString
+  ingredients: MyString
+
+two:
+  kitchen: two
+  name: MyString
+  image: MyString
+  source: MyString
+  url: MyString
+  ingredient_lines: MyString
+  ingredients: MyString
