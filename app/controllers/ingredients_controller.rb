@@ -1,6 +1,6 @@
 class IngredientsController < ApplicationController
 
-    # skip_before_action :authenticate, only: [:create]
+    skip_before_action :authenticate
 
     def index
         @ingredients = Ingredient.all 
@@ -32,6 +32,6 @@ class IngredientsController < ApplicationController
     private
 
     def ingredient_params
-        params.permit(:name, :storage, :icon, :status, :notes)
+        params.permit(:id, :name, :storage, :icon, :status, :notes, :kitchen_id)
     end
 end

@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 
-    skip_before_action :authenticate, only: [:create, :login]
+    # skip_before_action :authenticate, only: [:create, :login]
 
     def create 
         user = User.create(
@@ -33,6 +33,11 @@ class UsersController < ApplicationController
 
     def autologin
         render json: @current_user
+    end
+
+    def index
+        @users = User.all
+        render json: @users
     end
 
 end
