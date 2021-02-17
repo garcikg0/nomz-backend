@@ -1,10 +1,9 @@
 class KitchensController < ApplicationController
 
-    skip_before_action :authenticate
+    skip_before_action :authenticate, only: [:index, :show, :create, :update, :destroy]
 
     def test
-        @kitchen = Kitchen.find(params[:id])
-        render json: @kitchen
+        render json: @current_kitchen_user
     end
     
     def index

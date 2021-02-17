@@ -13,6 +13,7 @@ class ApplicationController < ActionController::API
         begin
             payload = decode_token(get_auth_token)
             set_current_user!(payload["user_id"])
+            set_kitchen_user!(payload["user_id"])
         rescue
             render json: { error: "Invalid Request" }, status: :unauthorized
         end
@@ -26,6 +27,10 @@ class ApplicationController < ActionController::API
 
     def set_current_user!(id)
         @current_user = User.find(id)
+    end
+
+    def set_kitchen_user!(id)
+        @current_kitchen_user = id
     end
 
 end
