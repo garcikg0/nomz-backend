@@ -2,6 +2,11 @@ class KitchensController < ApplicationController
 
     skip_before_action :authenticate
 
+    def test
+        @kitchen = Kitchen.find(params[:id])
+        render json: @kitchen
+    end
+    
     def index
         @kitchens = Kitchen.all
         render json: @kitchens
