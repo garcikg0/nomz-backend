@@ -11,6 +11,6 @@ Rails.application.routes.draw do
   get "/kitchens/:id", to: "kitchens#show"
   delete "/kitchens/:id", to: "kitchens#destroy"
   patch "/kitchens/:id", to: "kitchens#update"
-  get "/kitchenstest", to: "kitchens#test"
+  get "/kitchenuser", to: "kitchens#kitchen_user"
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

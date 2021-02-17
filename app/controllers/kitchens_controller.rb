@@ -2,7 +2,7 @@ class KitchensController < ApplicationController
 
     skip_before_action :authenticate, only: [:index, :show, :create, :update, :destroy]
 
-    def test
+    def kitchen_user
         render json: @current_kitchen_user
     end
     
