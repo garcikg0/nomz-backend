@@ -24,7 +24,7 @@ class KitchensController < ApplicationController
 
     def update
         @kitchen = Kitchen.find(params[:id])
-        kitchen.update(kitchen_params)
+        @kitchen.update(kitchen_params)
         render json: @kitchen
     end
 
