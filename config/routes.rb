@@ -6,11 +6,15 @@ Rails.application.routes.draw do
   resources :users, only: [:create]
   post "/login", to: "users#login"
   get "/autologin", to: "users#autologin"
-  delete "/kitchens/:id", to: "kitchens#destroy"
-  patch "/kitchens/:id", to: "kitchens#update"
-  post "/kitchens", to: "kitchens#create"
+ 
   get "/kitchenuser", to: "kitchens#kitchen_user"
+  post "/kitchens", to: "kitchens#create"
+  patch "/kitchens/:id", to: "kitchens#update"
+  delete "/kitchens/:id", to: "kitchens#destroy"
+  
   post "/ingredients", to: "ingredients#create"
+  patch "/ingredients/:id", to: "ingredients#update"
+  delete "/ingredients/:id", to:"ingredients#destroy"
 
   get "/users", to: "users#index"
   get "/kitchens", to: "kitchens#index"
