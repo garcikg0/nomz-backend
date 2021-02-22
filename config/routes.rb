@@ -10,6 +10,8 @@ Rails.application.routes.draw do
   patch "/kitchens/:id", to: "kitchens#update"
   post "/kitchens", to: "kitchens#create"
   get "/kitchenuser", to: "kitchens#kitchen_user"
+  post "/ingredients", to: "ingredients#create"
+
   get "/users", to: "users#index"
   get "/kitchens", to: "kitchens#index"
   get "/kitchens/:id", to: "kitchens#show"

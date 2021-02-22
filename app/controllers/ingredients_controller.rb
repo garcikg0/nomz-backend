@@ -1,6 +1,6 @@
 class IngredientsController < ApplicationController
 
-    # skip_before_action :authenticate
+    skip_before_action :authenticate, only: [:create]
 
     def index
         @ingredients = Ingredient.all 
