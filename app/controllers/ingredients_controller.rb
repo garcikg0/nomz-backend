@@ -1,6 +1,6 @@
 class IngredientsController < ApplicationController
 
-    skip_before_action :authenticate, only: [:create]
+    skip_before_action :authenticate, only: [:index, :show, :create, :update, :destroy]
 
     def index
         @ingredients = Ingredient.all 
@@ -13,13 +13,13 @@ class IngredientsController < ApplicationController
     end
 
     def create
-        ingredient = Ingredient.create(ingredient_params)
+        @ingredient = Ingredient.create(ingredient_params)
         render json: @ingredient
     end
 
     def update
         @ingredient = Ingredient.find(params[:id])
-        ingredient.update(ingredient_params)
+        @ingredient.update(ingredient_params)
         render json: @ingredient
     end
 
