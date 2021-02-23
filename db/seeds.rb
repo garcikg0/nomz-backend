@@ -6,16 +6,16 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-User.create(
-  first_name: "Admin",
-  last_name: "Admin",
-  username: "admin",
-  email: "admin@test.co",
-  bio: "admin test",
-  password_digest: "admin"
-)
+# User.create(
+#   first_name: "Admin",
+#   last_name: "Admin",
+#   username: "admin",
+#   email: "admin@test.co",
+#   bio: "admin test",
+#   password_digest: "admin"
+# )
 
-Kitchen.create(user_id: 1, name: "NYC Apartment")
+# Kitchen.create(user_id: 1, name: "NYC Apartment")
 
 Ingredient.create(
     kitchen_id: 1,

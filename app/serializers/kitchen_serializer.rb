@@ -1,5 +1,4 @@
 class KitchenSerializer < ActiveModel::Serializer
-  attributes :id, :user_id, :name, :ingredients, :recipes
+  attributes :id, :user_id, :name, :ingredients
   has_many :ingredients
-  has_many :recipes
 end
