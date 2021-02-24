@@ -90,7 +90,7 @@ Ingredient.create(
 )
 
 # Recipe.create(
-#     kitchen_id: 1,
+#     user_id: 1,
 #     name: "Roasted Brussels Sprouts And Crispy Baked Tofu With Honey-Sesame Glaze",
 #     image: "https://www.edamam.com/web-img/254/254a1027e396a977f8ba5dd8cac9adc5.jpg",
 #     source: "cookieandkate.com",
