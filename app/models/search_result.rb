@@ -1,5 +1,5 @@
 class SearchResult < ApplicationRecord
-  belongs_to :user, foreign_key: 'search_term_key'
+  belongs_to :user
   # create method to take params and convert into an object
   def self.frontend_request(params)
     api_url = "https://api.edamam.com/search?q="
@@ -8,7 +8,6 @@ class SearchResult < ApplicationRecord
     @response = Faraday.get(@url, {'Accept' => 'applicaton/json'})
     @resJSON = JSON.parse(@response.body)
     @tempRecipe = @resJSON["hits"]
-    
     @results = @tempRecipe.map do |res|
       {
         name: res["recipe"]["label"],
@@ -19,7 +18,7 @@ class SearchResult < ApplicationRecord
         ingredients: res["recipe"]["ingredients"]
       }
     end
-    byebug
+    # byebug
     return @results
   end
   
