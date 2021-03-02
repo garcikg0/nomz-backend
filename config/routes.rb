@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :search_results, only: [:edamam_search]
   resources :icons
   resources :ingredients
   resources :recipes
@@ -19,6 +20,8 @@ Rails.application.routes.draw do
   get "/users", to: "users#index"
   get "/kitchens", to: "kitchens#index"
   get "/kitchens/:id", to: "kitchens#show"
+
+  post "/recipesearch", to: "search_results#edamam_search"
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

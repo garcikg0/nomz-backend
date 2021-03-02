@@ -1,6 +1,6 @@
 class RecipesController < ApplicationController
 
-    # skip_before_action :authenticate
+    skip_before_action :authenticate
 
     def index
         @recipes = Recipe.all
@@ -19,7 +19,7 @@ class RecipesController < ApplicationController
 
     def update
         @recipe = Recipe.find(params[:id])
-        recipe.update(recipe_params)
+        @recipe.update(recipe_params)
         render json: @recipe
     end
 
@@ -31,6 +31,7 @@ class RecipesController < ApplicationController
 
     private
     def recipe_params
-        params.permit(:kitchen_id, :name, :image, :source, :url, :ingredient_lines, :ingredients)
+        params.permit(:id, :user_id, :name, :image, :source, :url, :ingredient_lines, :ingredients)
     end
+    
 end

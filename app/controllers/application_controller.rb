@@ -30,7 +30,7 @@ class ApplicationController < ActionController::API
     end
 
     def set_kitchen_user!(id)
-        @current_kitchen_user = id
+        @current_kitchen_user = User.find(id).id
     end
 
 end
