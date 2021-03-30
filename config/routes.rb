@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   get "/kitchens/:id", to: "kitchens#show"
 
   post "/recipesearch", to: "search_results#edamam_search"
+  get "/searchindex", to: "search_results#index"
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

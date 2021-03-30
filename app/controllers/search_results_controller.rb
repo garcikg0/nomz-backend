@@ -1,6 +1,6 @@
 class SearchResultsController < ApplicationController
 
-    skip_before_action :authenticate, only: [:edamam_search]
+    skip_before_action :authenticate, only: [:edamam_search, :index]
 
     wrap_parameters format: [], only: [:edamam_search]
 
@@ -11,14 +11,16 @@ class SearchResultsController < ApplicationController
 
     def edamam_search
         @api_res = SearchResult.frontend_request(search_params)
+        byebug
         @search = SearchResult.create(
-        user_id: params[:user_id],
-        search_term_key: params[:search_term_key],
-        search_term: params[:search_term],
-        from: params[:from],
-        to: params[:to],
-        results: @api_res
+            user_id: params[:user_id],
+            search_term_key: params[:search_term_key],
+            search_term: params[:search_term],
+            from: params[:from],
+            to: params[:to],
+            results: @api_res
         )
+        byebug
         render json: @search
     end
 
