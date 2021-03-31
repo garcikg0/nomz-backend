@@ -21,7 +21,10 @@ class SearchResultsController < ApplicationController
             results: @api_res
         )
         byebug
-        render json: @search
+        @eval = eval(@search.results)
+        @search_result = SearchResult.find(@search.id)
+        @search_result.update(results: @eval)
+        render json: @search_result
     end
 
     private
