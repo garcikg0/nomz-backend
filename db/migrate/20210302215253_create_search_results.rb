@@ -6,7 +6,7 @@ class CreateSearchResults < ActiveRecord::Migration[6.0]
       t.string :search_term
       t.string :from
       t.string :to
-      t.string :results
+      t.string :results, array: true, default: []
     end
   end
 end

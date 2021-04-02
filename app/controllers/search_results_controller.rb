@@ -30,14 +30,7 @@ class SearchResultsController < ApplicationController
     private
     def search_params
         params.require(:user_id)
-        params.permit(:user_id, :search_term_key, :search_term, :from, :to, results: [
-            :name,
-            :image,
-            :source,
-            :url,
-            :ingredientLines,
-            :ingredients
-        ])
+        params.permit(:user_id, :search_term_key, :search_term, :from, :to, :results)
     end
 
 end

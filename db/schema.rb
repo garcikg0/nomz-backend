@@ -65,7 +65,7 @@ ActiveRecord::Schema.define(version: 2021_03_02_215253) do
     t.string "search_term"
     t.string "from"
     t.string "to"
-    t.string "results"
+    t.string "results", default: [], array: true
     t.index ["user_id"], name: "index_search_results_on_user_id"
   end
 
