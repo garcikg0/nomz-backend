@@ -11,7 +11,6 @@ class SearchResultsController < ApplicationController
 
     def edamam_search
         @api_res = SearchResult.frontend_request(search_params)
-        byebug
         @search = SearchResult.create(
             user_id: params[:user_id],
             search_term_key: params[:search_term_key],
@@ -20,17 +19,26 @@ class SearchResultsController < ApplicationController
             to: params[:to],
             results: @api_res
         )
-        byebug
-        @eval = eval(@search.results)
-        @search_result = SearchResult.find(@search.id)
-        @search_result.update(results: @eval)
-        render json: @search_result
+        @fixedResultsArr = SearchResult.results_arr_fix(@search.results)
+        @response = {
+            id: @search.id,
+            search_term_key: @search.search_term_key,
+            search_term: @search.search_term,
+            from: @search.from,
+            to: @search.to,
+            results: @fixedResultsArr
+        }
+        render json: @response
     end
 
     private
     def search_params
         params.require(:user_id)
-        params.permit(:user_id, :search_term_key, :search_term, :from, :to, :results)
+        params.permit(:user_id, :search_term_key, :search_term, :from, :to, 
+        results: [:name, :image, :source, :ingredientLines, 
+                ingredients:[:text, :foodCategory]
+            ]
+        )
     end
 
 end

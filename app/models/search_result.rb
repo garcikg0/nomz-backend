@@ -1,7 +1,7 @@
 class SearchResult < ApplicationRecord
   belongs_to :user
   
-  def recipe_ingred_fix(ingredientsArr) 
+  def self.recipe_ingred_fix(ingredientsArr) 
     @ingred = ingredientsArr.map do |res| 
       {
         text: res["text"],
@@ -19,23 +19,29 @@ class SearchResult < ApplicationRecord
     # get API response with results
     @response = Faraday.get(@url, {'Accept' => 'application/json'}) 
     # JSON parse API response.body
-    byebug
     @resJSON = JSON.parse(@response.body)
-    # map through array of recipe objects with needed key value pairs
+    # get array of recipe objects from response
     @tempRecipe = @resJSON["hits"]
+    # map through array of recipe objects with needed key value pairs
     @results = @tempRecipe.map do |res|
       {
         name: res["recipe"]["label"],
-        image: res["recipe"][u
-        "image"],
+        image: res["recipe"]["image"],
         source: res["recipe"]["source"],
         url: res["recipe"]["url"],
         ingredientLines: res["recipe"]["ingredientLines"],
-        ingredients: res["recipe"]["ingredients"]
+        ingredients: recipe_ingred_fix(res["recipe"]["ingredients"])
       }
     end
-    # return array
+    # return array of recipe objects
     return @results
+  end
+
+  def self.results_arr_fix(resultsArr)
+    @newResultsArr = resultsArr.map do |res|
+      eval(res)
+  end
+  return @newResultsArr
   end
   
 end
