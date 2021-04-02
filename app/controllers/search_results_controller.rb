@@ -10,7 +10,9 @@ class SearchResultsController < ApplicationController
     end
 
     def edamam_search
+        #get edamam API response
         @api_res = SearchResult.frontend_request(search_params)
+        #save API response to backend as a new record 
         @search = SearchResult.create(
             user_id: params[:user_id],
             search_term_key: params[:search_term_key],
@@ -19,7 +21,9 @@ class SearchResultsController < ApplicationController
             to: params[:to],
             results: @api_res
         )
+        #change results to proper array of object - removing str data type
         @fixedResultsArr = SearchResult.results_arr_fix(@search.results)
+        #create new object to send proper JSON formatted response to frontend
         @response = {
             id: @search.id,
             search_term_key: @search.search_term_key,
