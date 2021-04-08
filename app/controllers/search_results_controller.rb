@@ -23,15 +23,17 @@ class SearchResultsController < ApplicationController
         )
         #change results to proper array of object - removing str data type
         @fixedResultsArr = SearchResult.results_arr_fix(@search.results)
-        #create new object to send proper JSON formatted response to frontend
+        #paginate results with appropriate amount
+        @pagResultsArr = SearchResult.paginate(@fixedResultsArr, params[:from])
+        #create new object to send proper JSON formatted response to frontend with pagination
         @response = {
             id: @search.id,
             search_term_key: @search.search_term_key,
             search_term: @search.search_term,
             from: @search.from,
             to: @search.to,
-            results: @fixedResultsArr
-        }
+            results: @pagResultsArr
+        }   
         render json: @response
     end
 

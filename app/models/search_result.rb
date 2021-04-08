@@ -43,6 +43,12 @@ class SearchResult < ApplicationRecord
   end
   return @newResultsArr
   end
+
+  def self.paginate(resultsArr, from)
+    @arr = resultsArr
+    @results = @arr[from, 20]
+    return @results
+  end
   
 end
 
