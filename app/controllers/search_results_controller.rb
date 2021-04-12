@@ -1,12 +1,31 @@
 class SearchResultsController < ApplicationController
 
-    skip_before_action :authenticate, only: [:edamam_search, :index]
+    skip_before_action :authenticate, only: [:send_results, :edamam_search, :index]
 
     wrap_parameters format: [], only: [:edamam_search]
 
     def index
         @search_results = SearchResult.all
         render json: @search_results
+    end
+
+    def send_results
+        #find SearchResult record by id 
+        @backend_results = SearchResult.find(params[:id])
+        #change results to proper array of objects - removing str data type
+        @fixedResultsArr = SearchResult.results_arr_fix(@backend_results.results)
+        #paginate results with appropriate amount of records
+        @pagResultsArr = SearchResult.paginate(@fixedResultsArr, params[:pagFrom])
+        #create new object to send proper JSON formatted response to frontend with pagination
+        @response = {
+            id: @backend_results.id,
+            search_term_key: @backend_results.search_term_key,
+            search_term: @backend_results.search_term,
+            from: @backend_results.from,
+            to: @backend_results.to,
+            results: @pagResultsArr
+        }   
+        render json: @response
     end
 
     def edamam_search
@@ -23,7 +42,7 @@ class SearchResultsController < ApplicationController
         )
         #change results to proper array of object - removing str data type
         @fixedResultsArr = SearchResult.results_arr_fix(@search.results)
-        #paginate results with appropriate amount
+        #paginate results with appropriate amount of records
         @pagResultsArr = SearchResult.paginate(@fixedResultsArr, params[:from])
         #create new object to send proper JSON formatted response to frontend with pagination
         @response = {
@@ -40,7 +59,7 @@ class SearchResultsController < ApplicationController
     private
     def search_params
         params.require(:user_id)
-        params.permit(:user_id, :search_term_key, :search_term, :from, :to, 
+        params.permit(:id, :user_id, :search_term_key, :search_term, :from, :to, 
         results: [:name, :image, :source, :ingredientLines, 
                 ingredients:[:text, :foodCategory]
             ]

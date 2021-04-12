@@ -23,6 +23,7 @@ Rails.application.routes.draw do
 
   post "/recipesearch", to: "search_results#edamam_search"
   get "/searchindex", to: "search_results#index"
+  post "/sendresults", to: "search_results#send_results"
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
