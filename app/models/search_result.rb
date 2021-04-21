@@ -17,7 +17,6 @@ class SearchResult < ApplicationRecord
     api_key = "&app_id=0b82cc58&app_key=261ccdef93fe9904029ee5ff77011f79"
     @url = "#{api_url}#{params[:search_term]}#{api_key}&from=#{params[:from]}&to=#{params[:to]}"
     # get API response with results
-    byebug
     @response = Faraday.get(@url, {'Accept' => 'application/json'}) 
     # JSON parse API response.body
     @resJSON = JSON.parse(@response.body)

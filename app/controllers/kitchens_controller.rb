@@ -35,6 +35,6 @@ class KitchensController < ApplicationController
 
     private
     def kitchen_params
-        params.permit(:id, :name, :user_id)
+        params.permit(:id, :name)
     end
 end
