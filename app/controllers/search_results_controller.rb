@@ -95,9 +95,9 @@ class SearchResultsController < ApplicationController
     private
     def search_params
         params.require(:user_id)
-        params.permit(:id, :user_id, :search_term_key, :search_term, :from, :to, 
+        params.permit(:id, :user_id, :search_term_key, :search_term, :from, :to, :pagFrom,
         results: [:name, :image, :source, :ingredientLines, 
-                ingredients:[:text, :foodCategory]
+                ingredients:[:text, :foodCategory, :ingredMatch, :ingredBlock]
             ]
         )
     end
