@@ -74,7 +74,7 @@ class SearchResultsController < ApplicationController
             end
         else
             #find SearchResult record by id 
-            @backend_reulsts = SearchResult.find(params[:id])
+            @backend_results = SearchResult.find(params[:id])
              #change results to proper array of objects - removing str data type
             @fixedResultsArr = SearchResult.results_arr_fix(@backend_results.results)
             #paginate results with appropriate amount of records
