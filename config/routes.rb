@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   patch "/kitchens/:id", to: "kitchens#update"
   delete "/kitchens/:id", to: "kitchens#destroy"
   
+  get "/ingredients/:id", to: "ingredients#show"
   post "/ingredients", to: "ingredients#create"
   patch "/ingredients/:id", to: "ingredients#update"
   delete "/ingredients/:id", to:"ingredients#destroy"
