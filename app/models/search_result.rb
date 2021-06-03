@@ -40,8 +40,8 @@ class SearchResult < ApplicationRecord
   def self.results_arr_fix(resultsArr)
     @newResultsArr = resultsArr.map do |res|
       eval(res)
-  end
-  return @newResultsArr
+    end
+    return @newResultsArr
   end
 
   def self.paginate(resultsArr, from)
