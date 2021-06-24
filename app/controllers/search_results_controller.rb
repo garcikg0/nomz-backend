@@ -1,6 +1,6 @@
 class SearchResultsController < ApplicationController
 
-    skip_before_action :authenticate, only: [:send_results, :edamam_search, :index]
+    skip_before_action :authenticate, only: [:send_results, :edamam_search, :index, :update_results]
 
     wrap_parameters format: [], only: [:edamam_search]
 
@@ -90,7 +90,41 @@ class SearchResultsController < ApplicationController
             }   
             render json: @response
         end
-    end 
+    end
+
+    def update_results
+        @search_result = SearchResult.find(params[:id])
+        @results = @search_result.results
+        @result_to_update = eval(@results[params[:resultArrIndex]])
+        @ingredient_to_update = @result_to_update[:ingredients][params[:ingredArrIndex]]
+        @ingred_obj = {
+            id: params[:ingredMatchObj]["id"],
+            kitchen_id: params[:ingredMatchObj]["kitchen_id"],
+            name: params[:ingredMatchObj]["name"],
+            storage: params[:ingredMatchObj]["storage"],
+            icon: params[:ingredMatchObj]["icon"],
+            status: params[:ingredMatchObj]["status"],
+            notes: params[:ingredMatchObj]["notes"]
+        }
+        @ingredient_to_update[:ingredMatch] = @ingred_obj
+        @results[params[:resultArrIndex]] = @result_to_update.to_s
+        @updated_search_result = {
+            id: @search_result.id,
+            user_id: @search_result.user_id,
+            search_term_key: @search_result.search_term_key,
+            search_term: @search_result.search_term, 
+            from: @search_result.from,
+            to: @search_result.to, 
+            results: @results
+        }
+        @search_result.update(@updated_search_result)
+        byebug
+        @fixed_results_arr = SearchResult.results_arr_fix(@search_result.results)
+        # byebug
+        render json: @fixed_results_arr
+    end
+
+
 
     private
     def search_params
