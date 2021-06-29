@@ -113,8 +113,15 @@ class SearchResultsController < ApplicationController
             status: params[:ingredMatchObj]["status"],
             notes: params[:ingredMatchObj]["notes"]
         }
-        #set value of :ingredMatch key to ingred object to backend ingred object. This updates instance variables up to @results_arr_of_hashes.
-        @ingredient_to_update[:ingredMatch] = @ingred_obj
+        #check if there is already an ingredMatch. 
+        if @ingredient_to_update[:ingredMatch]
+            #if there is an ingredMatch, then add ingred_obj to existing array using splat operator (equivalent to JavaScript spread operator) 
+            @ingredMatch_arr = @ingredient_to_update[:ingredMatch]
+            @ingredient_to_update[:ingredMatch] = [*@ingredMatch_arr, @ingred_obj]
+        else
+            #else set value of :ingredMatch key to an arry with ingred object to backend ingred object. This updates instance variables up to @results_arr_of_hashes.
+            @ingredient_to_update[:ingredMatch] = [@ingred_obj]
+        end
         #update selected result with updated attributes and convert to string to match backend data structure 
         @search_result.results[params[:resultArrIndex]] = @results_arr_of_hashes[params[:resultArrIndex]].to_s
         #save record to complete record update
