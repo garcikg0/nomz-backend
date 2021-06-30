@@ -26,7 +26,8 @@ Rails.application.routes.draw do
   post "/recipesearch", to: "search_results#edamam_search"
   get "/searchindex", to: "search_results#index"
   post "/sendresults", to: "search_results#send_results"
-  post "/updateresults", to: "search_results#update_results"
+  post "/ingredmatchupdate", to: "search_results#update_results_ingredMatch"
+  post "/ingredblockupdate", to: "search_results#update_results_ingredBlock"
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
