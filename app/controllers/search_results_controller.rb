@@ -1,6 +1,6 @@
 class SearchResultsController < ApplicationController
 
-    skip_before_action :authenticate, only: [:send_results, :edamam_search, :index, :update_results_ingredMatch]
+    skip_before_action :authenticate, only: [:send_results, :edamam_search, :index, :update_results_ingredMatch, :update_results_ingredBlock]
 
     wrap_parameters format: [], only: [:edamam_search]
 
@@ -153,7 +153,7 @@ class SearchResultsController < ApplicationController
         @result_to_update = @results_arr_of_hashes[params[:resultArrIndex]]
         #find ingredient to update
         @ingredient_to_update = @result_to_update[:ingredients][params[:ingredArrIndex]]
-        #define ingredMatch ingred object (value for :ingredBlockObj key)
+        #define ingredBlock ingred object (value for :ingredBlockObj key)
         @ingred_obj = {
             id: params[:ingredBlockObj]["id"],
             kitchen_id: params[:ingredBlockObj]["kitchen_id"],
