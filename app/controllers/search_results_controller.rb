@@ -203,19 +203,14 @@ class SearchResultsController < ApplicationController
         @result_to_update = @results_arr_of_hashes[params[:resultArrIndex]]
         #find ingredient to update
         @ingredient_to_update = @result_to_update[:ingredients][params[:ingredArrIndex]]
-
         #params[:ingredMatchObj] is aleady the ingredObj we want to get rid of. Iterate through ingredMatch array to find ingredObj we want to remove from ingredMatch array
-        
-        # for i in @ingredient_to_update[:ingredMatch]
-        #     #if ingredObj is found, then remove ingredObj from ingredMatch array. Else continue
-        #     byebug
-        #     if @ingredient_to_update[:ingredMatch][i] == params[:ingredMatchObj]
-        #         @ingredient_to_update[:ingredMatch].delete(params[:ingredMatchObj])
-        #     end
-        # end
+        @ingredient_to_update[:ingredMatch].each do |ingredObj|
+            if (ingredObj[:id] == params[:ingredMatchObj][:id])
+                @ingredient_to_update[:ingredMatch].delete(ingredObj)
+            end 
+        end
         #update selected result with updated attributes and convert to string to match backend data structure 
         @search_result.results[params[:resultArrIndex]] = @results_arr_of_hashes[params[:resultArrIndex]].to_s
-        byebug
         #save record to complete record update
         @search_result.save
         #convert newly saved SearchResult record's :results array from array of strings to array of hashes
