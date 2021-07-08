@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   post "/sendresults", to: "search_results#send_results"
   post "/ingredmatchupdate", to: "search_results#update_results_ingredMatch"
   post "/ingredblockupdate", to: "search_results#update_results_ingredBlock"
+  post "/ingredmatchundo", to: "search_results#undo_results_ingredMatch"
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

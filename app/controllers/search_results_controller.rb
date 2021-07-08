@@ -1,6 +1,6 @@
 class SearchResultsController < ApplicationController
 
-    skip_before_action :authenticate, only: [:send_results, :edamam_search, :index, :update_results_ingredMatch, :update_results_ingredBlock]
+    skip_before_action :authenticate, only: [:send_results, :edamam_search, :index, :update_results_ingredMatch, :update_results_ingredBlock, :undo_results_ingredMatch]
 
     wrap_parameters format: [], only: [:edamam_search]
 
@@ -192,6 +192,47 @@ class SearchResultsController < ApplicationController
         render json: @response
     end
 
+    def undo_results_ingredMatch
+        #find SearchResult record that needs to be updated
+        @search_result = SearchResult.find(params[:id])
+        #define :results of selected SearchResult record (:results is an array of strings)
+        @results = @search_result.results
+        # convert :results to an array of objects/hashes
+        @results_arr_of_hashes = SearchResult.results_arr_fix(@results)
+        #find result to update
+        @result_to_update = @results_arr_of_hashes[params[:resultArrIndex]]
+        #find ingredient to update
+        @ingredient_to_update = @result_to_update[:ingredients][params[:ingredArrIndex]]
+
+        #params[:ingredMatchObj] is aleady the ingredObj we want to get rid of. Iterate through ingredMatch array to find ingredObj we want to remove from ingredMatch array
+        
+        # for i in @ingredient_to_update[:ingredMatch]
+        #     #if ingredObj is found, then remove ingredObj from ingredMatch array. Else continue
+        #     byebug
+        #     if @ingredient_to_update[:ingredMatch][i] == params[:ingredMatchObj]
+        #         @ingredient_to_update[:ingredMatch].delete(params[:ingredMatchObj])
+        #     end
+        # end
+        #update selected result with updated attributes and convert to string to match backend data structure 
+        @search_result.results[params[:resultArrIndex]] = @results_arr_of_hashes[params[:resultArrIndex]].to_s
+        byebug
+        #save record to complete record update
+        @search_result.save
+        #convert newly saved SearchResult record's :results array from array of strings to array of hashes
+        @fixed_results_arr = SearchResult.results_arr_fix(@search_result.results)
+        #paginate results with appropriate amount of records
+        @pagResultsArr = SearchResult.paginate(@fixed_results_arr, params[:pagFrom])
+        #create new object to send proper JSON formatted response to frontend with pagination
+        @response = {
+            id: @search_result.id,
+            search_term_key: @search_result.search_term_key,
+            search_term: @search_result.search_term,
+            from: @search_result.from,
+            to: @search_result.to,
+            results: @pagResultsArr
+        }   
+        render json: @response
+    end
 
 
     private
