@@ -76,6 +76,8 @@ GEM
       multipart-post (>= 1.2, < 3)
       ruby2_keywords
     faraday-net_http (1.0.1)
+    faraday_middleware (1.1.0)
+      faraday (~> 1.0)
     ffi (1.14.2)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
@@ -173,6 +175,7 @@ DEPENDENCIES
   bootsnap (>= 1.4.2)
   byebug
   faraday
+  faraday_middleware
   jwt (~> 2.2)
   listen (~> 3.2)
   pg (>= 0.18, < 2.0)

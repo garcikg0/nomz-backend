@@ -31,6 +31,7 @@ class SearchResultsController < ApplicationController
         if params[:id] == nil
             if SearchResult.find_by(search_term: params[:search_term], from: params[:from], to: params[:to])
                 @backend_results = SearchResult.find_by(search_term: params[:search_term], from: params[:from], to: params[:to])
+                byebug
                 #change results to proper array of objects - removing str data type
                 @fixedResultsArr = SearchResult.results_arr_fix(@backend_results.results)
                 #paginate results with appropriate amount of records
@@ -49,6 +50,7 @@ class SearchResultsController < ApplicationController
                 #get edamam API response
                 @api_res = SearchResult.frontend_request(search_params)
                 #save API response to backend as a new record 
+                byebug
                 @search = SearchResult.create(
                     user_id: params[:user_id],
                     search_term_key: params[:search_term_key],
@@ -57,6 +59,7 @@ class SearchResultsController < ApplicationController
                     to: params[:to],
                     results: @api_res
                 )
+                byebug
                 #change results to proper array of object - removing str data type
                 @fixedResultsArr = SearchResult.results_arr_fix(@search.results)
                 #paginate results with appropriate amount of records
@@ -75,6 +78,7 @@ class SearchResultsController < ApplicationController
         else
             #find SearchResult record by id 
             @backend_results = SearchResult.find(params[:id])
+            byebug
              #change results to proper array of objects - removing str data type
             @fixedResultsArr = SearchResult.results_arr_fix(@backend_results.results)
             #paginate results with appropriate amount of records

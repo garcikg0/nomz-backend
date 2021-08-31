@@ -1,7 +1,7 @@
 class SearchResult < ApplicationRecord
   belongs_to :user
-  
-  def self.recipe_ingred_fix(ingredientsArr) 
+
+  def self.recipe_ingred_fix(ingredientsArr)
     @ingred = ingredientsArr.map do |res| 
       {
         text: res["text"],
@@ -33,14 +33,19 @@ class SearchResult < ApplicationRecord
         ingredients: recipe_ingred_fix(res["recipe"]["ingredients"])
       }
     end
+    @results_json = @results.map do |res|
+      res.to_json
+    end
+    byebug
     # return array of recipe objects
-    return @results
+    return @results_json
   end
 
   def self.results_arr_fix(resultsArr)
     @newResultsArr = resultsArr.map do |res|
-      eval(res)
+      JSON.parse(res)
     end
+    byebug
     return @newResultsArr
   end
 
