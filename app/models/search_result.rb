@@ -33,19 +33,19 @@ class SearchResult < ApplicationRecord
         ingredients: recipe_ingred_fix(res["recipe"]["ingredients"])
       }
     end
+    # map through results object to return JSON string representing the model
     @results_json = @results.map do |res|
       res.to_json
     end
-    byebug
-    # return array of recipe objects
+    # return array of recipe objects in JSON 
     return @results_json
   end
 
   def self.results_arr_fix(resultsArr)
+    # parse resultsArr in JSON into a data structure - array of hashes
     @newResultsArr = resultsArr.map do |res|
       JSON.parse(res)
     end
-    byebug
     return @newResultsArr
   end
 
