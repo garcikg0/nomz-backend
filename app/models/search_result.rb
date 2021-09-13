@@ -1,6 +1,6 @@
 class SearchResult < ApplicationRecord
   belongs_to :user
-
+  
   def self.recipe_ingred_fix(ingredientsArr)
     @ingred = ingredientsArr.map do |res| 
       {
@@ -9,6 +9,21 @@ class SearchResult < ApplicationRecord
       }
     end
     return @ingred
+  end
+
+  def self.results_arr_fix(resultsArr)
+    #parse resultsArr in JSON into a data structure - array of hashes
+    @newResultsArr = resultsArr.map do |res|
+      JSON.parse(res)
+    end
+    #return array of hashes of resultsArr in JSON
+    return @newResultsArr
+  end
+
+  def self.paginate(resultsArr, from)
+    @arr = resultsArr
+    @results = @arr[from, 20]
+    return @results
   end
   
   def self.frontend_request(params)
@@ -37,25 +52,62 @@ class SearchResult < ApplicationRecord
     @results_json = @results.map do |res|
       res.to_json
     end
-    # return array of recipe objects in JSON 
-    return @results_json
+    #create & save API response to backend as a new record 
+    @search = SearchResult.create(
+      user_id: params[:user_id],
+      search_term_key: params[:search_term_key],
+      search_term: params[:search_term],
+      from: params[:from],
+      to: params[:to],
+      results: @results_json
+    )
+    #change results to proper array of object - removing str data type
+    @fixedResultsArr = SearchResult.results_arr_fix(@search.results)
+    #paginate results with appropriate amount of records
+    @pagResultsArr = SearchResult.paginate(@fixedResultsArr, params[:from])
+    #create new object to send proper JSON formatted response to frontend with pagination
+    @response = {
+        id: @search.id,
+        search_term_key: @search.search_term_key,
+        search_term: @search.search_term,
+        from: @search.from,
+        to: @search.to,
+        results: @pagResultsArr
+    }   
+    #return SearchResult record 
+    return @response
   end
 
-  def self.results_arr_fix(resultsArr)
-    # parse resultsArr in JSON into a data structure - array of hashes
-    @newResultsArr = resultsArr.map do |res|
-      JSON.parse(res)
+  def self.find_record(params)
+    #find SearchResult record in db
+    if params[:id] == nil
+      @backend_results = SearchResult.find_by(search_term: params[:search_term], from: params[:from], to: params[:to])
+    else
+      @backend_results = SearchResult.find(params[:id])
     end
-    return @newResultsArr
+    # if no results, return nil to create new SearchResult record
+    if !@backend_results
+      return nil
+    else 
+      #change results to proper array of objects - removing str data type
+      @fixedResultsArr = SearchResult.results_arr_fix(@backend_results.results)
+      #paginate results with appropriate amount of records
+      @pagResultsArr = SearchResult.paginate(@fixedResultsArr, params[:pagFrom])
+      #create new object to send proper JSON formatted response to frontend with pagination
+      @response = {
+          id: @backend_results.id,
+          search_term_key: @backend_results.search_term_key,
+          search_term: @backend_results.search_term,
+          from: @backend_results.from,
+          to: @backend_results.to,
+          results: @pagResultsArr
+      }
+    end
+    #return SearchResult record
+    return @response
   end
-
-  def self.paginate(resultsArr, from)
-    @arr = resultsArr
-    @results = @arr[from, 20]
-    return @results
-  end
-  
 end
+
 
 
 

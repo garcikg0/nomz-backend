@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :search_results, only: [:edamam_search]
+  resources :search_results
   resources :icons
   resources :ingredients
   resources :recipes

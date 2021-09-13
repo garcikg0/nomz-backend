@@ -10,89 +10,21 @@ class SearchResultsController < ApplicationController
     end
 
     def send_results
-        @backend_results = SearchResult.find(params[:id])
-        #change results to proper array of objects - removing str data type
-        @fixedResultsArr = SearchResult.results_arr_fix(@backend_results.results)
-        #paginate results with appropriate amount of records
-        @pagResultsArr = SearchResult.paginate(@fixedResultsArr, params[:pagFrom])
-        #create new object to send proper JSON formatted response to frontend with pagination
-        @response = {
-            id: @backend_results.id,
-            search_term_key: @backend_results.search_term_key,
-            search_term: @backend_results.search_term,
-            from: @backend_results.from,
-            to: @backend_results.to,
-            results: @pagResultsArr
-        }   
-        render json: @response
+        #pagination frontend request - update records displaying on frontend
+        @search_result_record = SearchResult.find_record(params)
+        render json: @search_result_record
     end
 
     def edamam_search
-        if params[:id] == nil
-            if SearchResult.find_by(search_term: params[:search_term], from: params[:from], to: params[:to])
-                @backend_results = SearchResult.find_by(search_term: params[:search_term], from: params[:from], to: params[:to])
-                byebug
-                #change results to proper array of objects - removing str data type
-                @fixedResultsArr = SearchResult.results_arr_fix(@backend_results.results)
-                #paginate results with appropriate amount of records
-                @pagResultsArr = SearchResult.paginate(@fixedResultsArr, params[:pagFrom])
-                #create new object to send proper JSON formatted response to frontend with pagination
-                @response = {
-                    id: @backend_results.id,
-                    search_term_key: @backend_results.search_term_key,
-                    search_term: @backend_results.search_term,
-                    from: @backend_results.from,
-                    to: @backend_results.to,
-                    results: @pagResultsArr
-                }   
-                render json: @response 
-            else
-                #get edamam API response
-                @api_res = SearchResult.frontend_request(search_params)
-                #save API response to backend as a new record 
-                byebug
-                @search = SearchResult.create(
-                    user_id: params[:user_id],
-                    search_term_key: params[:search_term_key],
-                    search_term: params[:search_term],
-                    from: params[:from],
-                    to: params[:to],
-                    results: @api_res
-                )
-                byebug
-                #change results to proper array of object - removing str data type
-                @fixedResultsArr = SearchResult.results_arr_fix(@search.results)
-                #paginate results with appropriate amount of records
-                @pagResultsArr = SearchResult.paginate(@fixedResultsArr, params[:from])
-                #create new object to send proper JSON formatted response to frontend with pagination
-                @response = {
-                    id: @search.id,
-                    search_term_key: @search.search_term_key,
-                    search_term: @search.search_term,
-                    from: @search.from,
-                    to: @search.to,
-                    results: @pagResultsArr
-                }   
-                render json: @response
-            end
+        #find SearchResult record 
+        @found_search_result_record = SearchResult.find_record(params)
+        if @found_search_result_record
+            #if record exists, return SearchResult record (JSON, paginated)
+            render json: @found_search_result_record
         else
-            #find SearchResult record by id 
-            @backend_results = SearchResult.find(params[:id])
-            byebug
-             #change results to proper array of objects - removing str data type
-            @fixedResultsArr = SearchResult.results_arr_fix(@backend_results.results)
-            #paginate results with appropriate amount of records
-            @pagResultsArr = SearchResult.paginate(@fixedResultsArr, params[:pagFrom])
-            #create new object to send proper JSON formatted response to frontend with pagination
-            @response = {
-                id: @backend_results.id,
-                search_term_key: @backend_results.search_term_key,
-                search_term: @backend_results.search_term,
-                from: @backend_results.from,
-                to: @backend_results.to,
-                results: @pagResultsArr
-            }   
-            render json: @response
+            #get edamam API response, create and return new SearchResult record (JSON, paginated)
+            @new_search_result_record = SearchResult.frontend_request(search_params)
+            render json: @new_search_result_record
         end
     end
 
