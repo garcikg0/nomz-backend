@@ -52,6 +52,7 @@ class SearchResult < ApplicationRecord
     @results_json = @results.map do |res|
       res.to_json
     end
+    byebug
     #create & save API response to backend as a new record 
     @search = SearchResult.create(
       user_id: params[:user_id],
@@ -62,7 +63,9 @@ class SearchResult < ApplicationRecord
       results: @results_json
     )
     #change results to proper array of object - removing str data type
+    byebug
     @fixedResultsArr = SearchResult.results_arr_fix(@search.results)
+    byebug
     #paginate results with appropriate amount of records
     @pagResultsArr = SearchResult.paginate(@fixedResultsArr, params[:from])
     #create new object to send proper JSON formatted response to frontend with pagination

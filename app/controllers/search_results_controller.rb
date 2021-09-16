@@ -38,7 +38,7 @@ class SearchResultsController < ApplicationController
         #find result to update
         @result_to_update = @results_arr_of_hashes[params[:resultArrIndex]]
         #find ingredient to update
-        @ingredient_to_update = @result_to_update[:ingredients][params[:ingredArrIndex]]
+        @ingredient_to_update = @result_to_update["ingredients"][params[:ingredArrIndex]]
         #define ingredMatch ingred object (value for :ingredMatchObj key)
         @ingred_obj = {
             id: params[:ingredMatchObj]["id"],
@@ -88,7 +88,7 @@ class SearchResultsController < ApplicationController
         #find result to update
         @result_to_update = @results_arr_of_hashes[params[:resultArrIndex]]
         #find ingredient to update
-        @ingredient_to_update = @result_to_update[:ingredients][params[:ingredArrIndex]]
+        @ingredient_to_update = @result_to_update["ingredients"][params[:ingredArrIndex]]
         #define ingredBlock ingred object (value for :ingredBlockObj key)
         @ingred_obj = {
             id: params[:ingredBlockObj]["id"],
