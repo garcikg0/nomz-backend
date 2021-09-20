@@ -59,7 +59,7 @@ class SearchResultsController < ApplicationController
             @ingredient_to_update[:ingredMatch] = [@ingred_obj]
         end
         #update selected result with updated attributes and convert to string to match backend data structure 
-        @search_result.results[params[:resultArrIndex]] = @results_arr_of_hashes[params[:resultArrIndex]].to_s
+        @search_result.results[params[:resultArrIndex]] = @results_arr_of_hashes[params[:resultArrIndex]].to_json
         #save record to complete record update
         @search_result.save
         #convert newly saved SearchResult record's :results array from array of strings to array of hashes
@@ -108,8 +108,8 @@ class SearchResultsController < ApplicationController
             #else set value of :ingredBlock key to an arry with ingred object to backend ingred object. This updates instance variables up to @results_arr_of_hashes.
             @ingredient_to_update[:ingredBlock] = [@ingred_obj]
         end
-        #update selected result with updated attributes and convert to string to match backend data structure 
-        @search_result.results[params[:resultArrIndex]] = @results_arr_of_hashes[params[:resultArrIndex]].to_s
+        #update selected result with updated attributes and convert to JSON string to match backend data structure 
+        @search_result.results[params[:resultArrIndex]] = @results_arr_of_hashes[params[:resultArrIndex]].to_json
         #save record to complete record update
         @search_result.save
         #convert newly saved SearchResult record's :results array from array of strings to array of hashes
@@ -124,7 +124,7 @@ class SearchResultsController < ApplicationController
             from: @search_result.from,
             to: @search_result.to,
             results: @pagResultsArr
-        }   
+        }
         render json: @response
     end
 
@@ -146,7 +146,7 @@ class SearchResultsController < ApplicationController
             end 
         end
         #update selected result with updated attributes and convert to string to match backend data structure 
-        @search_result.results[params[:resultArrIndex]] = @results_arr_of_hashes[params[:resultArrIndex]].to_s
+        @search_result.results[params[:resultArrIndex]] = @results_arr_of_hashes[params[:resultArrIndex]].to_json
         #save record to complete record update
         @search_result.save
         #convert newly saved SearchResult record's :results array from array of strings to array of hashes
