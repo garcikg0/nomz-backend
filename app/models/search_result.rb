@@ -106,6 +106,83 @@ class SearchResult < ApplicationRecord
     #return SearchResult record
     return @response
   end
+
+  def self.update_ingred(params, ingredient)
+    @ingredient_to_update = ingredient
+    #if ingredMatch request
+    if params[:ingredMatchObj]
+      #define ingred obj to add to ingredMatch arr
+      @ingred_obj = {
+        id: params[:ingredMatchObj]["id"],
+        kitchen_id: params[:ingredMatchObj]["kitchen_id"],
+        name: params[:ingredMatchObj]["name"],
+        storage: params[:ingredMatchObj]["storage"],
+        icon: params[:ingredMatchObj]["icon"],
+        status: params[:ingredMatchObj]["status"],
+        notes: params[:ingredMatchObj]["notes"]
+      }
+      #if there is an ingredMatch array already defined
+      if @ingredient_to_update["ingredMatch"]
+        #copy of previous ingredMatch array
+        @ingredMatch_arr = @ingredient_to_update["ingredMatch"]
+        #define ingredMatch arr by using splat to copy previous ingredMatch array and add ingred obj requested to be added as an ingredMatch
+        @ingredient_to_update["ingredMatch"] = [*@ingredMatch_arr, @ingred_obj]
+      else
+        #if no ingredMatch array already define, then define ingredMatch array in ingedient to update object and add ingred obj requested to be added as an IngredMatch
+        @ingredient_to_update["ingredMatch"] = [@ingred_obj]
+      end
+      #return updated ingredient
+      return @ingredient_to_update
+    #if ingredBlock request  
+    elsif params[:ingredBlockObj]
+      #define ingred obj to add to ingredBlock arr
+      @ingred_obj = {
+        id: params[:ingredBlockObj]["id"],
+        kitchen_id: params[:ingredBlockObj]["kitchen_id"],
+        name: params[:ingredBlockObj]["name"],
+        storage: params[:ingredBlockObj]["storage"],
+        icon: params[:ingredBlockObj]["icon"],
+        status: params[:ingredBlockObj]["status"],
+        notes: params[:ingredBlockObj]["notes"]
+      }
+      #if there is an ingredBlock array already defined
+      if @ingredient_to_update["ingredBlock"]
+        #copy of previous ingredBlock array
+        @ingredBlock_arr = @ingredient_to_update["ingredBlock"]
+        #define ingredBlock arr by using splat to copy previous ingredBlock array and add ingred obj requested to be added as an ingredBlock
+        @ingredient_to_update["ingredBlock"] = [*@ingredBlock_arr, @ingred_obj]
+      else
+        #if no ingredBlock array already define, then define ingredBlock array in ingedient to update object and add ingred obj requested to be added as an IngredBlock
+        @ingredient_to_update["ingredBlock"] = [@ingred_obj]
+      end
+      #return updated ingredient
+      return @ingredient_to_update
+
+    #if undo ingredMatch request  
+    elsif params[:ingredMatchUndoObj]
+      #iterate through ingredMatch array of ingredient and delete ingredient object that has the same id as requested in params
+      @ingredient_to_update["ingredMatch"].each do |ingred|
+        if (ingred["id"] == params[:ingredMatchUndoObj][:id])
+          @ingredient_to_update["ingredMatch"].delete(ingred)
+        end
+      end
+      #return updated ingredient
+      return @ingredient_to_update
+    end
+  end
+
+  def self.update_result_ingredient(result_arr, params)
+    @results_arr_of_hashes = result_arr
+    #find result to update
+    @result_to_update = @results_arr_of_hashes[params[:resultArrIndex]]
+    #find ingredient to update
+    @ingredient_to_update = @result_to_update["ingredients"][params[:ingredArrIndex]]
+    #update ingredient whether there was an ingredMatchObj, ingredBlockObj, or ingredMatchUndoObj in params from frontend request
+    @updated_ingredient = SearchResult.update_ingred(params, @ingredient_to_update)
+    #return results array of hashes - the selected ingredient is updated in @result_to_update as well as @results_arr_of_hashes
+    return @results_arr_of_hashes
+  end
+
 end
 
 

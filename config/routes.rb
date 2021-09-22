@@ -26,6 +26,9 @@ Rails.application.routes.draw do
   post "/recipesearch", to: "search_results#edamam_search"
   get "/searchindex", to: "search_results#index"
   post "/sendresults", to: "search_results#send_results"
+
+  post "/ingredupdate", to: "search_results#update_ingred_of_result"
+  
   post "/ingredmatchupdate", to: "search_results#update_results_ingredMatch"
   post "/ingredblockupdate", to: "search_results#update_results_ingredBlock"
   post "/ingredmatchundo", to: "search_results#undo_results_ingredMatch"
